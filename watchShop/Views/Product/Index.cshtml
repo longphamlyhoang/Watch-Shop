@@ -1,0 +1,84 @@
+﻿@model IEnumerable<watchShop.Entities.Product>
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Index";
+    string currencyFormat(double number)
+    {
+        var info = CultureInfo.GetCultureInfo("vi-VN");
+        return String.Format(info, "{0:C0}", number);
+    }
+    var category = ViewBag.Category as watchShop.Entities.Category;
+}
+
+<nav aria-label="breadcrumb" class="float-right">
+    <ol class="breadcrumb has-arrow">
+        <li class="breadcrumb-item">
+            <a href="\">Category</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-controller="Product" asp-action="Index">@category.CategoryName</a>
+        </li>
+    </ol>
+</nav>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">
+        <i class="fa fa-plus"><i class="mdi mdi-library-plus"></i> Create</i>
+    </a>
+    <a class="btn btn-dark" asp-controller="Category" asp-action="Index">
+        <i class="fa fa-backward"><i class="mdi mdi-chevron-left"></i> Back to category</i>
+    </a>
+</p>
+<table class="table table-bordered table-hover table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pictures)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => product.ProductId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => product.ProductName)
+                </td>
+                <td class="text-right">
+                    @currencyFormat(product.Price)
+                </td>
+                <td class="text-right">
+                    @Html.DisplayFor(modelItem => product.Quantity)
+                </td>
+                <td>
+                    <img class="product_img" src="@Url.Content(product.Pictures)" style="width:80px" />
+                </td>
+                <td class="text-right">
+                    <a class="btn btn-info btn-sm text-white" asp-controller="Product" asp-action="Edit" asp-route-productId="@product.ProductId">
+                        <i class="mdi mdi-grease-pencil"></i>
+                    </a>
+                    <a class="btn btn-secondary btn-sm text-white" asp-controller="Product" asp-action="Detail" asp-route-productId="@product.ProductId">
+                        <i class="mdi mdi-eye"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

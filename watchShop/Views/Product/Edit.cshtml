@@ -1,0 +1,102 @@
+﻿@model watchShop.Models.Product.EditProduct
+
+@{
+    ViewData["Title"] = "Edit Product";
+    var category = ViewBag.Category as watchShop.Entities.Category;
+}
+
+<nav aria-label="breadcrumb" class="float-right">
+    <ol class="breadcrumb has-arrow">
+        <li class="breadcrumb-item">
+            <a href="\">Category</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-controller="Product" asp-action="Index" asp-route-id="@category.CategoryId">@category.CategoryName</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-controller="Product" asp-action="Edit">Edit @category.CategoryName</a>
+        </li>
+    </ol>
+</nav>
+<br />
+<h3>Edit @category.CategoryName</h3>
+<br />
+<div class="row">
+    <div class="col-md-4">
+        <form enctype="multipart/form-data" asp-controller="Product" asp-action="Edit" method="POST">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ProductName" class="control-label"></label>
+                <input asp-for="ProductName" class="form-control" />
+                <input asp-for="ProductId" hidden class="form-control" value="@Model.ProductId" />
+                <span asp-validation-for="ProductName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <img id="product-image" class="product_img-lg" src="@Url.Content(Model.ExistPicture)" />
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="Pictures" name="Pictures" accept="image/*">
+                    <label class="custom-file-label" for="Pictures">Choose file</label>
+                    <input type="hidden" asp-for="ExistPicture" value="@Model.ExistPicture">
+                    <input asp-for="CategoryId" hidden class="form-control" value="@Model.CategoryId" />
+                </div>
+            </div>
+            <div class="form-check">
+                <input asp-for="Status" class="form-check-input" checked="@Model.Status" />
+                <label class="form-check-label">Status</label>
+            </div>
+            <div class="form-group">
+                <label asp-for="TradeMark" class="control-label"></label>
+                <input asp-for="TradeMark" class="form-control" />
+                <span asp-validation-for="TradeMark" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+                    <i class="mdi mdi-checkbox-multiple-marked-circle"></i> Submit
+                </button>
+                <a asp-action="Index" asp-route-id="@category.CategoryId" class="btn btn-dark"><i class="mdi mdi-chevron-left"></i>Back</a>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Create Category</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Do you want to edit?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-dark" data-dismiss="modal"><i class="mdi mdi-export"></i> Close</button>
+                            <button type="submit" class="btn btn-success"> <i class="mdi mdi-checkbox-multiple-marked-circle"></i> Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Add the following code if you want the name of the file appear on select
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+            $('#product-image').attr('src', window.URL.createObjectURL($(this)[0].files[0]))
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
