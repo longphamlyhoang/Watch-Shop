@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using watchShop.Entities;
 using watchShop.Models.Accout;
+using watchShop.Services;
 
 namespace watchShop.Controllers
 {
@@ -15,7 +16,8 @@ namespace watchShop.Controllers
 
         private readonly SignInManager<AppUser> signInManager;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public AccountController(UserManager<AppUser> userManager,
+                                SignInManager<AppUser> signInManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -45,6 +47,37 @@ namespace watchShop.Controllers
                 }
             }
             return View(model);
+        }
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Register(Register register)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new AppUser()
+                {
+                    Email = register.Email,
+                    UserName = register.Email
+                };
+                var result = await userManager.CreateAsync(user, register.Password);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                }
+                return View();
+            }
+            return View();
         }
         public async Task<IActionResult> Logout()
         {

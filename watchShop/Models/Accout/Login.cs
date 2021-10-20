@@ -17,5 +17,6 @@ namespace watchShop.Models.Accout
         [Display(Name ="Remeber me")]
         public bool RemenberMe { get; set; }
         public string ReturnUrl { get; set; }
+        public string[] Roles { get; set; }
     }
 }

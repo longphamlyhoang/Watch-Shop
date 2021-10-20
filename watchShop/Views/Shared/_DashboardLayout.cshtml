@@ -180,13 +180,15 @@
         <!-- partial:partials/_sidebar.html -->
         <div class="sidebar">
             <div class="user-profile">
-                <div class="display-avatar animated-avatar">
-                    <img class="profile-img img-lg rounded-circle" src="~/assets/images/profile/male/image_1.png" alt="profile image">
-                </div>
-                <div class="info-wrapper">
-                    <p class="user-name">Allen Clerk</p>
-                    <h6 class="display-income">$3,400,00</h6>
-                </div>
+                @if (signInManager.IsSignedIn(User))
+                {
+                    <div class="display-avatar animated-avatar">
+                        <img class="profile-img img-lg rounded-circle" src="@Url.Content(user.Avatar)" alt="profile image">
+                    </div>
+                    <div class="info-wrapper">
+                        <p class="user-name"><a asp-controller="Account" asp-action="Logout">@User.Identity.Name</a></p>
+                    </div>
+                }
             </div>
             <ul class="navigation-menu">
                 <li class="nav-category-divider">MAIN</li>
@@ -202,29 +204,8 @@
                         <i class="mdi mdi-gauge link-icon"></i>
                     </a>
                 </li>
-                <li>
-                    <ul class="navbar-nav ml-auto">
-                        @if (signInManager.IsSignedIn(User))
-                        {
-
-                            <li class="nav-item">
-                                <div class="dropdown">
-                                    <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
-                                        <img src="@Url.Content(user.Avatar)" style="width:40px;height:40px;border-radius:50%" />
-
-                                        @User.Identity.Name
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Logout</a>
-                                    </div>
-                                </div>
-
-                            </li>
-                        }
-                    </ul>
-                </li>
             </ul>
-            
+
         </div>
         <!-- partial -->
         <div class="page-content-wrapper">

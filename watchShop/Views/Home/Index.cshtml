@@ -27,7 +27,7 @@
                                     <div class="shop-item">
                                         <div class="shop-item-image">
                                             <img src=@Url.Content(product.Pictures) style="object-fit:cover;" alt="@product.ProductName" />
-                                            <div class="shop-item-detail"><a class="btn btn-round btn-b"><span class="icon-basket">Add To Cart</span></a></div>
+                                            <div class="shop-item-detail"><a class="btn btn-round btn-b" asp-controller="Home" asp-action="AddToCart" asp-route-proId="@product.ProductId"><span class="icon-basket">Add To Cart</span></a></div>
                                         </div>
                                         <h4 class="shop-item-title font-alt"><a asp-controller="Home" asp-action="Details" asp-route-id="@product.ProductId">@product.ProductName</a></h4>@FormatCurrency((double)@product.Price)đ
                                     </div>

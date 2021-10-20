@@ -1,4 +1,16 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var session = HttpContextAccessor.HttpContext.Session;
+    string jsoncart = session.GetString(watchShop.Controllers.HomeController.CARTKEY);
+    var cart = new List<CartItem>();
+    if (jsoncart != null)
+    {
+        cart = JsonConvert.DeserializeObject<List<CartItem>>(jsoncart);
+    }
+}
+<!DOCTYPE html>
 <html lang="en-US" dir="ltr">
 <head>
     <meta charset="utf-8">
@@ -30,7 +42,7 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="~/assets-shop/images/favicons/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
-   
+
     <link href="~/assets-shop/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Template specific stylesheets-->
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700" rel="stylesheet">
@@ -56,7 +68,7 @@
         <nav class="navbar navbar-custom navbar-fixed-top navbar-transparent" role="navigation">
             <div class="container">
                 <div class="navbar-header">
-                    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#custom-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="index.html">Titan</a>
+                    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#custom-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" asp-controller="Home" asp-action="Index">Titan</a>
                 </div>
                 <div class="collapse navbar-collapse" id="custom-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -64,6 +76,14 @@
                             <a class="dropdown-toggle" data-toggle="dropdown">Login</a>
                         </li>
                     </ul>
+                </div>
+                <div style="float:right">
+                    <div class="cart box_1">
+                        <a asp-controller="Home" asp-action="Cart">
+                            <img src="~/Images/cart-1.png" alt="" />
+                        </a>
+                        <div class="clearfix"> </div>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -113,6 +133,7 @@
     JavaScripts
     =============================================
     -->
+    @RenderSection("Scripts", required: false)
     <script src="~/assets-shop/lib/jquery/dist/jquery.js"></script>
     <script src="~/assets-shop/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/assets-shop/lib/wow/dist/wow.js"></script>

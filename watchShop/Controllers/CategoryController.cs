@@ -18,7 +18,6 @@ namespace watchShop.Controllers
         }
 
 
-
         public IActionResult Index()
         {
             return View(categoryService.Gets());

@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
@@ -35,6 +35,11 @@ namespace watchShop
             services.AddIdentity<AppUser, IdentityRole>()
                                 .AddEntityFrameworkStores<WatchShopDBContext>()
                                 .AddDefaultTokenProviders();
+            services.AddDistributedMemoryCache();           // Đăng ký dịch vụ lưu cache trong bộ nhớ (Session sẽ sử dụng nó)
+            services.AddSession(cfg => {                    // Đăng ký dịch vụ Session
+                cfg.Cookie.Name = "watchshop";             // Đặt tên Session - tên này sử dụng ở Browser (Cookie)
+                cfg.IdleTimeout = new TimeSpan(0, 30, 0);    // Thời gian tồn tại của Session
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +60,7 @@ namespace watchShop
 
             app.UseRouting();
             app.UseAuthentication();
+            app.UseSession();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
